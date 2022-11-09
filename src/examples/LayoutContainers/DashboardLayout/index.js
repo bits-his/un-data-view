@@ -1,0 +1,46 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
+import VuiBox from "components/VuiBox";
+import { useVisionUIController, setLayout } from "context";
+import { Card } from "@mui/material";
+
+function DashboardLayout({ children }) {
+  const [controller, dispatch] = useVisionUIController();
+  const { miniSidenav } = controller;
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    setLayout(dispatch, "");
+  }, [pathname]);
+
+  return (
+    <VuiBox
+      sx={({ breakpoints, transitions, functions: { pxToRem } }) => ({
+        p: 3,
+        position: "relative",
+
+        [breakpoints.up("xl")]: {
+          marginright: miniSidenav ? pxToRem(120) : pxToRem(274),
+          transition: transitions.create(["margin-left"], {
+            easing: transitions.easing.easeInOut,
+            duration: transitions.duration.standard,
+          }),
+        },
+      })}
+      style={
+        {
+          // float: "right",
+        }
+      }
+    >
+      {/* <Card>fghjk</Card> */}
+      {children}
+    </VuiBox>
+  );
+}
+DashboardLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default DashboardLayout;
