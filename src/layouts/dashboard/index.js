@@ -29,21 +29,31 @@ import { lineChartOptionsDashboard } from "layouts/dashboard/data/lineChartOptio
 import { barChartDataDashboard } from "layouts/dashboard/data/barChartData";
 import { barChartOptionsDashboard } from "layouts/dashboard/data/barChartOptions";
 import VuiButton from "components/VuiButton";
+import { useState } from "react";
 
 function Dashboard() {
   const { gradients } = colors;
   const { cardContent } = gradients;
   // const navigate = useNavigate();
 
+  const [displayedGraph, setDisplayedGraph] = useState("Line");
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <VuiBox py={3} height={1000}>
         <div>
-          <Card style={{ float: "right", width: "40%" }}> ghjk</Card>
+          <Card
+            sx={{ height: "620px" }}
+            style={{ float: "right", width: "10%", backgroundColor: "white" }}
+          >
+            {" "}
+            ghjk
+            <VuiButton style={{ marginTop: "515%" }}>Download</VuiButton>
+          </Card>
           <VuiBox>
             <Card>
-              <VuiBox sx={{ height: "200%" }}>
+              <VuiBox sx={{ height: "500%" }}>
                 <VuiTypography variant="lg" color="primary" fontWeight="bold" mb="5px" mx="4px">
                   <VuiButton mx="4px">Pie Chart</VuiButton>
                 </VuiTypography>
@@ -51,11 +61,13 @@ function Dashboard() {
                   style={{
                     margin: "5px",
                   }}
-                  onClick={() => navigate("/")}
+                  onClick={() => setDisplayedGraph("Line")}
                 >
                   Line Chart
                 </VuiButton>
-                <VuiButton mx="4px"> Bar Chart</VuiButton>
+                <VuiButton mx="4px" onClick={() => setDisplayedGraph("Bar")}>
+                  Bar Chart
+                </VuiButton>
                 <VuiBox display="flex" alignItems="center" mb="20px">
                   <VuiTypography variant="button" color="success" fontWeight="bold">
                     <VuiTypography
@@ -65,22 +77,29 @@ function Dashboard() {
                     ></VuiTypography>
                   </VuiTypography>
                 </VuiBox>
-                <VuiBox sx={{ height: "310px" }}>
-                  <LineChart
-                    lineChartData={lineChartDataDashboard}
-                    lineChartOptions={lineChartOptionsDashboard}
-                  />
+                <VuiBox sx={{ height: "510px" }}>
+                  {displayedGraph === "Line" ? (
+                    <LineChart
+                      lineChartData={lineChartDataDashboard}
+                      lineChartOptions={lineChartOptionsDashboard}
+                    />
+                  ) : (
+                    <BarChart
+                      barChartData={barChartDataDashboard}
+                      barChartOptions={barChartOptionsDashboard}
+                    />
+                  )}
                 </VuiBox>
               </VuiBox>
             </Card>
           </VuiBox>
           <Grid container spacing={3} direction="row" justifyContent="center" alignItems="stretch">
             {/* <Grid item xs={12} md={6} lg={8}>
-            <Projects />
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <OrderOverview />
-          </Grid> */}
+              <Projects />
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <OrderOverview />
+            </Grid> */}
           </Grid>
         </div>
       </VuiBox>

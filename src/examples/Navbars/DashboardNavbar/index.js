@@ -13,6 +13,8 @@ import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
 // Vision UI Dashboard PRO React components
 import VuiTagInput from "../../../components/ViuTagInput";
+import VuiTagInput2 from "../../../components/ViuTagInput2";
+import VuiTagInput1 from "../../../components/ViuTagInput1";
 
 import {
   navbar,
@@ -29,9 +31,18 @@ import {
 } from "context";
 import team2 from "assets/images/team-2.jpg";
 import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
-import { Form, FormGroup, Label, Row } from "reactstrap";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Form,
+  FormGroup,
+  Label,
+  Row,
+} from "reactstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
-import { Card } from "@mui/material";
+import { Card, FormControl } from "@mui/material";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -40,6 +51,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   const [multiSelections, setMultiSelections] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const toggle = () => setDropdownOpen((prevState) => !prevState);
 
   useEffect(() => {
     if (fixedNavbar) {
@@ -102,21 +115,41 @@ function DashboardNavbar({ absolute, light, isMini }) {
   let data = [{ name: "Abula" }, { name: "Jone" }];
   return (
     <Toolbar>
-      <VuiBox color="inherit" mb={{ xs: 2, md: 3 }} sx={(theme) => navbarRow(theme, { isMini })}>
-        {/* <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} /> */}
-      </VuiBox>
       <FormGroup>
         <Label style={{ color: "white" }}>Indicators</Label>
-        <VuiTagInput placeholder="Add new tag." tags={["html", "css", "js"]} ClassName="mx-4" />
+        <VuiTagInput1 placeholder="Add new tag." tags={["html", "css", "js"]} ClassName="mx-4" />
       </FormGroup>
-      <FormGroup>
+      <FormGroup style={{ marginLeft: 30 }}>
         <Label style={{ color: "white" }}>Countries</Label>
         <VuiTagInput />
       </FormGroup>
 
-      {/* <p>yea range</p>
-      <VuiInput />
-      <VuiInput /> */}
+      <FormGroup style={{ marginLeft: 30 }}>
+        <Label style={{ color: "white", marginBottom: "60px", textAlign: "left" }}>
+          Year Range
+        </Label>
+        <div style={{ display: "flex", flexDirect: "row" }}>
+          <VuiTagInput2 />
+          <VuiTagInput2 style={{}} />
+        </div>
+      </FormGroup>
+      <FormGroup></FormGroup>
+
+      {/* <div className="d-flex p-5">
+        <Dropdown isOpen={dropdownOpen} toggle={toggle} direction={direction}>
+          <DropdownToggle caret>Dropdown</DropdownToggle>
+          <DropdownMenu {...args}>
+            <DropdownItem header>Header</DropdownItem>
+            <DropdownItem>Some Action</DropdownItem>
+            <DropdownItem text>Dropdown Item Text</DropdownItem>
+            <DropdownItem disabled>Action (disabled)</DropdownItem>
+            <DropdownItem divider />
+            <DropdownItem>Foo Action</DropdownItem>
+            <DropdownItem>Bar Action</DropdownItem>
+            <DropdownItem>Quo Action</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </div> */}
     </Toolbar>
   );
 }

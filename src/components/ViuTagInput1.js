@@ -10,23 +10,11 @@ export default function Tags() {
       <Autocomplete
         multiple
         options={top100Films.map((option) => option.title)}
-        renderInput={(params) => <TextField {...params} placeholder="Countries" />}
+        renderInput={(params) => <TextField {...params} placeholder="Indicators" />}
       />
     </Stack>
   );
 }
 
 // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-const top100Films = [
-  { title: "Nigeria" },
-  { title: "Ethiopia" },
-  { title: "Egypt" },
-  { title: "Mali" },
-  { title: "Algeria" },
-  { title: "Niger" },
-  { title: "kenya" },
-  { title: "Ghana" },
-  { title: "Chad" },
-  { title: "Camerooon" },
-  { title: "Togo" },
-];
+const top100Films = [{ title: "Population" }, { title: "GDP" }];
