@@ -29,7 +29,8 @@ import { lineChartOptionsDashboard } from "layouts/dashboard/data/lineChartOptio
 import { barChartDataDashboard } from "layouts/dashboard/data/barChartData";
 import { barChartOptionsDashboard } from "layouts/dashboard/data/barChartOptions";
 import VuiButton from "components/VuiButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchData } from "components/ViuTagInput";
 
 function Dashboard() {
   const { gradients } = colors;
@@ -37,11 +38,87 @@ function Dashboard() {
   // const navigate = useNavigate();
 
   const [displayedGraph, setDisplayedGraph] = useState("Line");
+  const [yearList, setYearList] = useState([]);
+  const [report, setReport] = useState([]);
+
+  useEffect(() => {
+    fetchData({ query_type: "get_years" })
+      .then((d) => {
+        if (d && d.results) {
+          setYearList(d.results.map((a) => a.year));
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
+
+  const [form, setForm] = useState({
+    indicator: [],
+    country: ["Regional Outlook"],
+    year_from: "2002",
+    year_to: "2022",
+  });
+
+  useEffect(() => {
+    if (form.country.includes("Regional Outlook")) {
+      fetchData({ query_type: "by_region", ...form })
+        .then((d) => {
+          if (d && d.results) {
+            // setList(d.results.map((a) => a.year));///
+            let semiFinal = {};
+            let finalData = [];
+
+            d.results.forEach((i) => {
+              if (Object.keys(semiFinal).includes(i.indicator)) {
+                semiFinal[i.indicator] = [...semiFinal[i.indicator], i.amount];
+              } else {
+                semiFinal[i.indicator] = [i.amount];
+              }
+            });
+
+            Object.keys(semiFinal).forEach((b) => finalData.push({ name: b, data: semiFinal[b] }));
+
+            console.log(finalData);
+            setReport(finalData);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else {
+      fetchData({ query_type: "by_country", ...form })
+        .then((d) => {
+          if (d && d.results) {
+            // setList(d.results.map((a) => a.year));
+            let semiFinal = {};
+            let finalData = [];
+
+            d.results.forEach((i) => {
+              if (Object.keys(semiFinal).includes(i.indicator)) {
+                semiFinal[i.indicator] = [...semiFinal[i.indicator], i.amount];
+              } else {
+                semiFinal[i.indicator] = [i.amount];
+              }
+            });
+
+            Object.keys(semiFinal).forEach((b) => finalData.push({ name: b, data: semiFinal[b] }));
+
+            // console.log(finalData);
+            setReport(finalData);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, [form]);
 
   return (
     <DashboardLayout>
-      <DashboardNavbar />
-      <VuiBox py={3} height={1000}>
+      <DashboardNavbar form={form} setForm={setForm} yearList={yearList} />
+      {/* {JSON.stringify(report)} */}
+      <VuiBox py={3} height={900}>
         <div>
           <Card
             sx={{ height: "620px" }}
@@ -80,13 +157,28 @@ function Dashboard() {
                 <VuiBox sx={{ height: "510px" }}>
                   {displayedGraph === "Line" ? (
                     <LineChart
-                      lineChartData={lineChartDataDashboard}
-                      lineChartOptions={lineChartOptionsDashboard}
+                      lineChartData={report}
+                      lineChartOptions={{
+                        ...lineChartOptionsDashboard,
+                        xaxis: {
+                          ...lineChartOptionsDashboard.xaxis,
+                          type: "datetime",
+                          categories: yearList,
+                        },
+                      }}
                     />
                   ) : (
                     <BarChart
-                      barChartData={barChartDataDashboard}
-                      barChartOptions={barChartOptionsDashboard}
+                      barChartData={report}
+                      // barChartOptions={barChartOptionsDashboard}
+                      barChartOptions={{
+                        ...barChartOptionsDashboard,
+                        xaxis: {
+                          ...barChartOptionsDashboard.xaxis,
+                          categories: yearList,
+                        },
+
+                      }}
                     />
                   )}
                 </VuiBox>

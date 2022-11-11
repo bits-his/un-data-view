@@ -3,18 +3,30 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import { Label } from "reactstrap";
+import { fetchData } from "./ViuTagInput";
 
-export default function Tags() {
+export default function Tags({ handleChange = (f) => f }) {
+  const [list, setList] = React.useState([]);
+  React.useEffect(() => {
+    fetchData({ query_type: "get_indicators" })
+      .then((d) => {
+        if (d && d.results) {
+          setList(d.results.map((a) => a.indicator));
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
+
   return (
     <Stack spacing={3} sx={{ width: 500 }}>
       <Autocomplete
         multiple
-        options={top100Films.map((option) => option.title)}
+        options={list}
         renderInput={(params) => <TextField {...params} placeholder="Indicators" />}
+        onChange={(e, value) => handleChange(value)}
       />
     </Stack>
   );
 }
-
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-const top100Films = [{ title: "Population" }, { title: "GDP" }];

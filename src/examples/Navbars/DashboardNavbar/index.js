@@ -12,7 +12,7 @@ import VuiInput from "components/VuiInput";
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
 // Vision UI Dashboard PRO React components
-import VuiTagInput from "../../../components/ViuTagInput";
+import VuiTagInput, { fetchData } from "../../../components/ViuTagInput";
 import VuiTagInput2 from "../../../components/ViuTagInput2";
 import VuiTagInput1 from "../../../components/ViuTagInput1";
 
@@ -44,7 +44,7 @@ import {
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Card, FormControl } from "@mui/material";
 
-function DashboardNavbar({ absolute, light, isMini }) {
+function DashboardNavbar({ absolute, light, isMini, form = {}, setForm = (f) => f, yearList=[] }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useVisionUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
@@ -75,53 +75,59 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
 
-  const renderMenu = () => (
-    <Menu
-      anchorEl={openMenu}
-      anchorReference={null}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "right",
-      }}
-      open={Boolean(openMenu)}
-      onClose={handleCloseMenu}
-      sx={{ mt: 2 }}
-    >
-      <NotificationItem
-        image={<img src={team2} alt="person" />}
-        title={["New message", "from Laur"]}
-        date="13 minutes ago"
-        onClick={handleCloseMenu}
-      />
-      <NotificationItem
-        image={<img src={logoSpotify} alt="person" />}
-        title={["New album", "by Travis Scott"]}
-        date="1 day"
-        onClick={handleCloseMenu}
-      />
-      <NotificationItem
-        color="text"
-        image={
-          <Icon fontSize="small" sx={{ color: ({ palette: { white } }) => white.main }}>
-            payment
-          </Icon>
-        }
-        title={["", "Payment successfully completed"]}
-        date="2 days"
-        onClick={handleCloseMenu}
-      />
-    </Menu>
-  );
+  // const renderMenu = () => (
+  //   <Menu
+  //     anchorEl={openMenu}
+  //     anchorReference={null}
+  //     anchorOrigin={{
+  //       vertical: "bottom",
+  //       horizontal: "right",
+  //     }}
+  //     open={Boolean(openMenu)}
+  //     onClose={handleCloseMenu}
+  //     sx={{ mt: 2 }}
+  //   >
+  //     <NotificationItem
+  //       image={<img src={team2} alt="person" />}
+  //       title={["New message", "from Laur"]}
+  //       date="13 minutes ago"
+  //       onClick={handleCloseMenu}
+  //     />
+  //     <NotificationItem
+  //       image={<img src={logoSpotify} alt="person" />}
+  //       title={["New album", "by Travis Scott"]}
+  //       date="1 day"
+  //       onClick={handleCloseMenu}
+  //     />
+  //     <NotificationItem
+  //       color="text"
+  //       image={
+  //         <Icon fontSize="small" sx={{ color: ({ palette: { white } }) => white.main }}>
+  //           payment
+  //         </Icon>
+  //       }
+  //       title={["", "Payment successfully completed"]}
+  //       date="2 days"
+  //       onClick={handleCloseMenu}
+  //     />
+  //   </Menu>
+  // );
   let data = [{ name: "Abula" }, { name: "Jone" }];
+
   return (
     <Toolbar>
+      {/* <p style={{ color: "white" }}>{JSON.stringify(form)}</p> */}
       <FormGroup>
         <Label style={{ color: "white" }}>Indicators</Label>
-        <VuiTagInput1 placeholder="Add new tag." tags={["html", "css", "js"]} ClassName="mx-4" />
+        <VuiTagInput1
+          placeholder="Add new tag."
+          ClassName="mx-4"
+          handleChange={(v) => setForm((p) => ({ ...p, indicator: v }))}
+        />
       </FormGroup>
       <FormGroup style={{ marginLeft: 30 }}>
         <Label style={{ color: "white" }}>Countries</Label>
-        <VuiTagInput />
+        <VuiTagInput handleChange={(v) => setForm((p) => ({ ...p, country: v }))} />
       </FormGroup>
 
       <FormGroup style={{ marginLeft: 30 }}>
@@ -129,8 +135,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
           Year Range
         </Label>
         <div style={{ display: "flex", flexDirect: "row" }}>
-          <VuiTagInput2 />
-          <VuiTagInput2 style={{}} />
+          <VuiTagInput2 yearList={yearList} handleChange={(v) => setForm((p) => ({ ...p, year_from: v }))} />
+          <VuiTagInput2 yearList={yearList} handleChange={(v) => setForm((p) => ({ ...p, year_to: v }))} style={{}} />
         </div>
       </FormGroup>
       <FormGroup></FormGroup>

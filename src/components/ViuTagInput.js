@@ -4,29 +4,47 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import { Label } from "reactstrap";
 
-export default function Tags() {
+export const APIURL = "http://localhost:34567";
+export async function fetchData(queryTerms = {}) {
+  try {
+    let qArr = [];
+    Object.keys(queryTerms).forEach((a) => {
+      if (typeof queryTerms[a] === "object" && queryTerms[a].length > 1) {
+        qArr.push(queryTerms[a].map((b) => `${a}=${b}`).join("&"));
+      } else {
+        qArr.push(`${a}=${queryTerms[a]}`);
+      }
+    });
+    console.log(qArr);
+    let raw = await fetch(`${APIURL}/query-data?${qArr.join("&")}`);
+    return raw.json();
+  } catch (error) {
+    return error;
+  }
+}
+
+export default function Tags({ handleChange = (f) => f }) {
+  const [list, setList] = React.useState([]);
+  React.useEffect(() => {
+    fetchData({ query_type: "get_countries" })
+      .then((d) => {
+        if (d && d.results) {
+          setList(d.results.map((a) => a.country));
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
+
   return (
     <Stack spacing={3} sx={{ width: 500 }}>
       <Autocomplete
         multiple
-        options={top100Films.map((option) => option.title)}
+        options={list}
         renderInput={(params) => <TextField {...params} placeholder="Countries" />}
+        onChange={(e, value) => handleChange(value)}
       />
     </Stack>
   );
 }
-
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-const top100Films = [
-  { title: "Nigeria" },
-  { title: "Ethiopia" },
-  { title: "Egypt" },
-  { title: "Mali" },
-  { title: "Algeria" },
-  { title: "Niger" },
-  { title: "kenya" },
-  { title: "Ghana" },
-  { title: "Chad" },
-  { title: "Camerooon" },
-  { title: "Togo" },
-];
