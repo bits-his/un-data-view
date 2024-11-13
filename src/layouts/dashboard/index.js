@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
-import { Card, LinearProgress, Stack } from "@mui/material";
+// import { Card, LinearProgress, Stack } from "@mui/material";
 import VuiBox from "components/VuiBox";
 import VuiTypography from "components/VuiTypography";
 import VuiProgress from "components/VuiProgress";
@@ -31,6 +31,9 @@ import { barChartOptionsDashboard } from "layouts/dashboard/data/barChartOptions
 import VuiButton from "components/VuiButton";
 import { useEffect, useState } from "react";
 import { fetchData } from "components/ViuTagInput";
+import { Card, Col, Row } from "reactstrap";
+import PieChart from "examples/Charts/PieCharts/PieChart";
+import { pieOptionsDashboard } from "./data/PieChartOption";
 
 function Dashboard() {
   const { gradients } = colors;
@@ -40,6 +43,9 @@ function Dashboard() {
   const [displayedGraph, setDisplayedGraph] = useState("Line");
   const [yearList, setYearList] = useState([]);
   const [report, setReport] = useState([]);
+
+  const series = report[0]?.data || [];
+  const labels = yearList.reverse();
 
   useEffect(() => {
     fetchData({ query_type: "get_years" })
@@ -51,7 +57,7 @@ function Dashboard() {
       .catch((e) => {
         console.log(e);
       });
-  }, []);
+  }, [displayedGraph]);
 
   const [form, setForm] = useState({
     indicator: [],
@@ -112,88 +118,122 @@ function Dashboard() {
           console.log(e);
         });
     }
-  }, [form]);
+  }, [form.country, form.indicator]);
 
   return (
     <DashboardLayout>
       <DashboardNavbar form={form} setForm={setForm} yearList={yearList} />
       {/* {JSON.stringify(report)} */}
-      <VuiBox py={3} height={900}>
-        <div>
-          <Card
-            sx={{ height: "620px" }}
-            style={{ float: "right", width: "10%", backgroundColor: "white" }}
-          >
-            {" "}
-            ghjk
-            <VuiButton style={{ marginTop: "515%" }}>Download</VuiButton>
-          </Card>
-          <VuiBox>
-            <Card>
-              <VuiBox sx={{ height: "500%" }}>
-                <VuiTypography variant="lg" color="primary" fontWeight="bold" mb="5px" mx="4px">
+      <VuiBox py={3} px={3} height={900}>
+        <Row>
+          <Col md={10} className="mb-3">
+            <VuiBox>
+              <Card className="mb-3">
+                <VuiBox>
+                  {/* <VuiTypography variant="lg" color="primary" fontWeight="bold" mb="5px" mx="4px">
                   <VuiButton mx="4px">Pie Chart</VuiButton>
-                </VuiTypography>
-                <VuiButton
-                  style={{
-                    margin: "5px",
-                  }}
-                  onClick={() => setDisplayedGraph("Line")}
-                >
-                  Line Chart
-                </VuiButton>
-                <VuiButton mx="4px" onClick={() => setDisplayedGraph("Bar")}>
-                  Bar Chart
-                </VuiButton>
-                <VuiBox display="flex" alignItems="center" mb="20px">
-                  <VuiTypography variant="button" color="success" fontWeight="bold">
-                    <VuiTypography
-                      variant="button"
-                      color="text"
-                      fontWeight="regular"
-                    ></VuiTypography>
-                  </VuiTypography>
-                </VuiBox>
-                <VuiBox sx={{ height: "510px" }}>
-                  {displayedGraph === "Line" ? (
-                    <LineChart
-                      lineChartData={report}
-                      lineChartOptions={{
-                        ...lineChartOptionsDashboard,
-                        xaxis: {
-                          ...lineChartOptionsDashboard.xaxis,
-                          type: "datetime",
-                          categories: yearList,
-                        },
-                      }}
-                    />
-                  ) : (
-                    <BarChart
-                      barChartData={report}
-                      // barChartOptions={barChartOptionsDashboard}
-                      barChartOptions={{
-                        ...barChartOptionsDashboard,
-                        xaxis: {
-                          ...barChartOptionsDashboard.xaxis,
-                          categories: yearList,
-                        },
+                </VuiTypography> */}
+                  <VuiButton mx="4px" onClick={() => setDisplayedGraph("Bar")}>
+                    Bar Chart
+                  </VuiButton>
+                  <VuiButton mx="4px" onClick={() => setDisplayedGraph("pie")}>
+                    Pie Chart
+                  </VuiButton>
+                  <VuiButton
+                    style={{
+                      margin: "5px",
+                    }}
+                    onClick={() => setDisplayedGraph("Line")}
+                  >
+                    Line Chart
+                  </VuiButton>
 
-                      }}
-                    />
-                  )}
+                  <VuiBox display="flex" alignItems="center" mb="20px">
+                    <VuiTypography variant="button" color="success" fontWeight="bold">
+                      <VuiTypography
+                        variant="button"
+                        color="text"
+                        fontWeight="regular"
+                      ></VuiTypography>
+                    </VuiTypography>
+                  </VuiBox>
+                  <VuiBox sx={{ height: "510px" }}>
+                    {/* {JSON.stringify(report)} */}
+                    {/* {JSON.stringify(yearList)} */}
+                    {displayedGraph === "Line" && (
+                      <LineChart
+                        lineChartData={report}
+                        lineChartOptions={{
+                          ...lineChartOptionsDashboard,
+                          xaxis: {
+                            ...lineChartOptionsDashboard.xaxis,
+                            type: "datetime",
+                            categories: labels,
+                          },
+                        }}
+                      />
+                    )}
+                    {displayedGraph === "Bar" && (
+                      <BarChart
+                        barChartData={report}
+                        // barChartOptions={barChartOptionsDashboard}
+                        barChartOptions={{
+                          ...barChartOptionsDashboard,
+                          xaxis: {
+                            ...barChartOptionsDashboard.xaxis,
+                            categories: labels,
+                          },
+                        }}
+                      />
+                    )}
+                    {displayedGraph === "pie" && (
+                      <PieChart
+                        pieChartData={{
+                          series: series,
+                          labels: labels,
+                        }}
+                        pieChartOptions={{
+                          width: 380,
+                          type: "pie",
+                        }}
+                      />
+                    )}
+                  </VuiBox>
                 </VuiBox>
-              </VuiBox>
-            </Card>
-          </VuiBox>
-          <Grid container spacing={3} direction="row" justifyContent="center" alignItems="stretch">
-            {/* <Grid item xs={12} md={6} lg={8}>
+              </Card>
+            </VuiBox>
+            <Grid
+              container
+              spacing={3}
+              direction="row"
+              justifyContent="center"
+              alignItems="stretch"
+            >
+              {/* <Grid item xs={12} md={6} lg={8}>
               <Projects />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
               <OrderOverview />
             </Grid> */}
-          </Grid>
-        </div>
+            </Grid>
+          </Col>
+
+          <Col md={2} className="mb-2">
+            <Card
+              // sx={{ height: "620px" }}
+              className="mb-3"
+              style={{ width: "100%", backgroundColor: "white", height: "100%" }}
+            >
+              <VuiBox>
+                <VuiButton style={{}}>Download</VuiButton>
+                <span></span>
+                <span> </span>
+                <VuiButton style={{}}>Upload</VuiButton>
+              </VuiBox>
+            </Card>
+          </Col>
+        </Row>
+        <div></div>
       </VuiBox>
       {/* <Footer /> */}
     </DashboardLayout>

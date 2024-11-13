@@ -32,6 +32,7 @@ import {
 import team2 from "assets/images/team-2.jpg";
 import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
 import {
+  Col,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -44,7 +45,14 @@ import {
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Card, FormControl } from "@mui/material";
 
-function DashboardNavbar({ absolute, light, isMini, form = {}, setForm = (f) => f, yearList=[] }) {
+function DashboardNavbar({
+  absolute,
+  light,
+  isMini,
+  form = {},
+  setForm = (f) => f,
+  yearList = [],
+}) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useVisionUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
@@ -117,29 +125,45 @@ function DashboardNavbar({ absolute, light, isMini, form = {}, setForm = (f) => 
   return (
     <Toolbar>
       {/* <p style={{ color: "white" }}>{JSON.stringify(form)}</p> */}
-      <FormGroup>
-        <Label style={{ color: "white" }}>Indicators</Label>
-        <VuiTagInput1
-          placeholder="Add new tag."
-          ClassName="mx-4"
-          handleChange={(v) => setForm((p) => ({ ...p, indicator: v }))}
-        />
-      </FormGroup>
-      <FormGroup style={{ marginLeft: 30 }}>
-        <Label style={{ color: "white" }}>Countries</Label>
-        <VuiTagInput handleChange={(v) => setForm((p) => ({ ...p, country: v }))} />
-      </FormGroup>
-
-      <FormGroup style={{ marginLeft: 30 }}>
-        <Label style={{ color: "white", marginBottom: "60px", textAlign: "left" }}>
-          Year Range
-        </Label>
-        <div style={{ display: "flex", flexDirect: "row" }}>
-          <VuiTagInput2 yearList={yearList} handleChange={(v) => setForm((p) => ({ ...p, year_from: v }))} />
-          <VuiTagInput2 yearList={yearList} handleChange={(v) => setForm((p) => ({ ...p, year_to: v }))} style={{}} />
-        </div>
-      </FormGroup>
-      <FormGroup></FormGroup>
+      <div className="w-100">
+        <Row>
+          <Col lg={4} md={4} sm={3}>
+            <FormGroup>
+              <Label style={{ color: "white" }}>Indicators</Label>
+              <VuiTagInput1
+                placeholder="Add new tag."
+                ClassName="mx-4"
+                handleChange={(v) => setForm((p) => ({ ...p, indicator: v }))}
+              />
+            </FormGroup>
+          </Col>
+          <Col lg={4} md={4} sm={3}>
+            <FormGroup>
+              <Label style={{ color: "white" }}>Countries</Label>
+              <VuiTagInput handleChange={(v) => setForm((p) => ({ ...p, country: v }))} />
+            </FormGroup>
+          </Col>
+          <Col lg={2} md={2} sm={3}>
+            <FormGroup>
+              <Label style={{ color: "white" }}>From</Label>
+              <VuiTagInput2
+                yearList={yearList}
+                handleChange={(v) => setForm((p) => ({ ...p, year_from: v }))}
+              />
+            </FormGroup>
+          </Col>
+          <Col lg={2} md={2} sm={3}>
+            <FormGroup>
+              <Label style={{ color: "white" }}>To</Label>
+              <VuiTagInput2
+                yearList={yearList}
+                handleChange={(v) => setForm((p) => ({ ...p, year_to: v }))}
+                style={{}}
+              />
+            </FormGroup>
+          </Col>
+        </Row>
+      </div>
 
       {/* <div className="d-flex p-5">
         <Dropdown isOpen={dropdownOpen} toggle={toggle} direction={direction}>

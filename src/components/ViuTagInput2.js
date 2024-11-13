@@ -8,7 +8,7 @@ import { fetchData } from "./ViuTagInput";
 export default function Tags({ yearList=[], handleChange = (f) => f }) {
 
   return (
-    <Stack spacing={3} sx={{ width: 150 }}>
+    <Stack spacing={3}>
       <Autocomplete
         // multiple
         options={yearList}

@@ -20,9 +20,9 @@ export default function Tags({ handleChange = (f) => f }) {
   }, []);
 
   return (
-    <Stack spacing={3} sx={{ width: 500 }}>
+    <Stack spacing={3}>
       <Autocomplete
-        multiple
+        // multiple
         options={list}
         renderInput={(params) => <TextField {...params} placeholder="Indicators" />}
         onChange={(e, value) => handleChange(value)}

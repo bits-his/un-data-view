@@ -3,8 +3,9 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import { Label } from "reactstrap";
+// export const APIURL = "http://localhost:34567";
 
-export const APIURL = "http://localhost:34567";
+export const APIURL = "https://server.brainstorm.ng/Result-Associate-Backend";
 export async function fetchData(queryTerms = {}) {
   try {
     let qArr = [];
@@ -38,9 +39,9 @@ export default function Tags({ handleChange = (f) => f }) {
   }, []);
 
   return (
-    <Stack spacing={3} sx={{ width: 500 }}>
+    <Stack spacing={3}>
       <Autocomplete
-        multiple
+        // multiple
         options={list}
         renderInput={(params) => <TextField {...params} placeholder="Countries" />}
         onChange={(e, value) => handleChange(value)}

@@ -35,15 +35,15 @@ export default styled(Button)(({ theme, ownerState }) => {
     }
 
     return {
-      background: backgroundValue,
-      color: colorValue,
+      background: "#120F29",
+      color: "#fff",
 
       "&:hover": {
-        backgroundColor: backgroundValue,
+        backgroundColor: "#120F29",
       },
 
       "&:focus:not(:hover)": {
-        backgroundColor: focusedBackgroundValue,
+        backgroundColor: "#120F29",
         boxShadow: boxShadowValue,
       },
 
@@ -55,6 +55,8 @@ export default styled(Button)(({ theme, ownerState }) => {
   };
 
   const outliedStyles = () => {
+    const backgroundImg =
+      "linear-gradient(127.09deg, rgba(6, 11, 40, 0.94) 19.41%, rgba(10, 14, 35, 0.49) 76.65%) border-box";
     const backgroundValue = color === "white" ? transparent.main : transparent.main;
     const colorValue = palette[color] ? palette[color].main : white.main;
 
@@ -68,7 +70,11 @@ export default styled(Button)(({ theme, ownerState }) => {
     }
 
     return {
-      background: backgroundValue,
+      backgroundColor: backgroundValue,
+      backgroundSize: "100% 100%",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+      // background: backgroundValue,
       color: colorValue,
       borderColor: borderColorValue,
 
