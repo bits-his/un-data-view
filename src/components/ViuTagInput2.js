@@ -5,10 +5,10 @@ import Stack from "@mui/material/Stack";
 import { Label } from "reactstrap";
 import { fetchData } from "./ViuTagInput";
 
-export default function Tags({ yearList=[], handleChange = (f) => f }) {
-
+export default function Tags({ yearList = [], handleChange = (f) => f }) {
   return (
     <Stack spacing={3}>
+      {/* {JSON.stringify(yearList.reverse())} */}
       <Autocomplete
         // multiple
         options={yearList}

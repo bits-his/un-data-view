@@ -3,9 +3,9 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import { Label } from "reactstrap";
-// export const APIURL = "http://localhost:34567";
+export const APIURL = "http://localhost:34567";
 
-export const APIURL = "https://server.brainstorm.ng/Result-Associate-Backend";
+// export const APIURL = "https://server.brainstorm.ng/Result-Associate-Backend";
 export async function fetchData(queryTerms = {}) {
   try {
     let qArr = [];

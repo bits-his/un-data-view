@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 
 import { Route, Switch, Redirect, useLocation } from "react-router-dom";
@@ -16,6 +17,7 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import routes from "routes";
 import { useVisionUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
   const [controller, dispatch] = useVisionUIController();
@@ -117,6 +119,7 @@ export default function App() {
           {getRoutes(routes)}
           <Redirect from="*" to="/dashboard" />
         </Switch>
+        <Toaster />
       </ThemeProvider>
     </CacheProvider>
   ) : (
@@ -141,6 +144,7 @@ export default function App() {
         {getRoutes(routes)}
         <Redirect from="*" to="/dashboard" />
       </Switch>
+      <Toaster />
     </ThemeProvider>
   );
 }

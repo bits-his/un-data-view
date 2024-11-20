@@ -44,6 +44,7 @@ import {
 } from "reactstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Card, FormControl } from "@mui/material";
+import "./style.css"
 
 function DashboardNavbar({
   absolute,
@@ -121,6 +122,36 @@ function DashboardNavbar({
   //   </Menu>
   // );
   let data = [{ name: "Abula" }, { name: "Jone" }];
+
+    // const fullList = useSelector((state) => state.individualDoc.patients);
+    // const sortedList = [...fullList].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    // const filteredList = sortedList.filter((item) =>
+    //   item.name.toLowerCase().includes(filterText.toLowerCase())
+    // );
+    // const paginatedList = filteredList.slice((page - 1) * limit, page * limit);
+      // const [filterText, setFilterText] = useState("");
+      // const [page, setPage] = useState(1);
+      // const limit = 20;
+        // const handleNextPage = () => {
+        //   if (page < Math.ceil(filteredList.length / limit)) {
+        //     setPage((prevPage) => prevPage + 1);
+        //   }
+        // };
+
+        // const handlePrevPage = () => {
+        //   setPage((prevPage) => Math.max(prevPage - 1, 1));
+        // };
+        // <div className="d-flex justify-content-between">
+        //   <CustomButton onClick={handlePrevPage} disabled={page === 1}>
+        //     Previous
+        //   </CustomButton>
+        //   <CustomButton
+        //     onClick={handleNextPage}
+        //     disabled={page >= Math.ceil(filteredList.length / limit)}
+        //   >
+        //     Next
+        //   </CustomButton>
+        // </div>;
 
   return (
     <Toolbar>
